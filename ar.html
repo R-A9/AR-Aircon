@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR HVAC Placement Tool</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@latest/dist/model-viewer.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #viewer-container {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 1 / 1;
+            background: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+        }
+
+        .instructions, .feedback {
+            margin-top: 15px;
+            font-size: 16px;
+            text-align: center;
+            color: #555;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Optimize Your HVAC Placement</h1>
+        <p>Interactive AR tool to help you choose the perfect spot for your HVAC system.</p>
+    </header>
+
+    <div id="viewer-container">
+        <model-viewer 
+            id="ar-viewer"
+            src="5394c50890d94351abf4468e979f11b0.glb" 
+            ios-src="AC_Indoor.usdz" 
+            alt="3D model of an HVAC system" 
+            ar 
+            ar-scale="auto" 
+            ar-placement="wall" 
+            camera-controls 
+            ar-modes="scene-viewer quick-look webxr"
+            environment-image="neutral" 
+            poster="https://modelviewer.dev/shared-assets/models/poster.jpg">
+        </model-viewer>
+    </div>
+
+    <div class="instructions">
+        <p>Tap the AR icon to place the HVAC system. Adjust until all indicators are green for optimal placement.</p>
+    </div>
+
+    <div class="feedback" id="feedback-message">
+        <!-- Dynamic feedback messages will appear here -->
+    </div>
+
+    <button onclick="alert('Coming soon: Advanced room customization and placement tips!')">
+        Customize Room
+    </button>
+
+    <script>
+        const arViewer = document.getElementById('ar-viewer');
+        const feedbackMessage = document.getElementById('feedback-message');
+
+        arViewer.addEventListener('quick-look-button', () => {
+            feedbackMessage.textContent = "Tap on the AR icon to begin placing the HVAC system.";
+            feedbackMessage.style.color = "gray";
+        });
+
+        arViewer.addEventListener('ar-status', (event) => {
+            if (event.detail.status === 'not-presenting') {
+                feedbackMessage.textContent = "Tap on the AR icon to begin placing the HVAC system.";
+                feedbackMessage.style.color = "gray";
+            } else if (event.detail.status === 'presenting') {
+                feedbackMessage.textContent = "Tap on your wall to place the HVAC system. Adjust until all feedback indicators are green.";
+                feedbackMessage.style.color = "blue";
+            }
+        });
+    </script>
+
+<script language="javascript">
+    // JavaScript code for detecting the platform and showing the blur wall
+    
+    // Function to detect if the platform is desktop
+    function isDesktop() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        return (
+            !/mobile|android|iphone|ipad|tablet|ipod/.test(userAgent)
+        );
+    }
+    
+    // Function to create and display the blur wall
+    function createBlurWall() {
+        // Create the blur wall element
+        const blurWall = document.createElement('div');
+        blurWall.id = 'blur-wall';
+    
+        // Apply styles to the blur wall
+        blurWall.style.position = 'fixed';
+        blurWall.style.top = '0';
+        blurWall.style.left = '0';
+        blurWall.style.width = '100vw';
+        blurWall.style.height = '100vh';
+        blurWall.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+        blurWall.style.backdropFilter = 'blur(20px)';
+        blurWall.style.zIndex = '1000';
+    
+        // Add an optional message
+        const message = document.createElement('div');
+        message.innerText = 'Desktop/laptop is not supported.';
+        message.style.position = 'absolute';
+        message.style.top = '50%';
+        message.style.left = '50%';
+        message.style.transform = 'translate(-50%, -50%)';
+        message.style.fontSize = '2.5rem';
+        message.style.color = '#333';
+        message.style.fontFamily = "Trebuchet MS";
+        blurWall.appendChild(message);
+    
+        // Append the blur wall to the body
+        document.body.appendChild(blurWall);
+    }
+    
+    // Check if the platform is desktop and display the blur wall
+    if (isDesktop()) {
+        createBlurWall();
+    }
+    
+    </script>
+
+</body>
+</html>
