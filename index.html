@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR HVAC Placement Tool</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@latest/dist/model-viewer.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #viewer-container {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 1 / 1;
+            background: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+        }
+
+        .instructions, .feedback {
+            margin-top: 15px;
+            font-size: 16px;
+            text-align: center;
+            color: #555;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Optimize Your HVAC Placement</h1>
+        <p>Interactive AR tool to help you choose the perfect spot for your HVAC system.</p>
+    </header>
+
+    <div id="viewer-container">
+        <model-viewer 
+            id="ar-viewer"
+            src="5394c50890d94351abf4468e979f11b0.glb" 
+            ios-src="AC_Indoor.usdz" 
+            alt="3D model of an HVAC system" 
+            ar 
+            ar-scale="auto" 
+            ar-placement="wall" 
+            camera-controls 
+            ar-modes="scene-viewer quick-look webxr"
+            environment-image="neutral" 
+            poster="https://modelviewer.dev/shared-assets/models/poster.jpg">
+        </model-viewer>
+    </div>
+
+    <div class="instructions">
+        <p>Tap the AR icon to place the HVAC system. Adjust until all indicators are green for optimal placement.</p>
+    </div>
+
+    <div class="feedback" id="feedback-message">
+        <!-- Dynamic feedback messages will appear here -->
+    </div>
+
+    <button onclick="alert('Coming soon: Advanced room customization and placement tips!')">
+        Customize Room
+    </button>
+
+    <script>
+        const arViewer = document.getElementById('ar-viewer');
+        const feedbackMessage = document.getElementById('feedback-message');
+        
+        // Ensure the AR button appears for iOS devices[_{{{CITATION{{{_1{Why doesn't the AR button appear in Chrome on iPhone? #774 - GitHub](https://github.com/google/model-viewer/issues/774)[_{{{CITATION{{{_2{AR Quick View's AR Quick View button cannot be pressed on some iOS ...](https://github.com/google/model-viewer/discussions/2971)
+        arViewer.setAttribute('quick-look-browsers', 'safari chrome');
+        
+        arViewer.addEventListener('quick-look-button', (event) => {
+            feedbackMessage.textContent = "Tap on the AR icon to begin placing the HVAC system.";
+            feedbackMessage.style.color = "gray";
+        });
+        
+        arViewer.addEventListener('ar-status', (event) => {
+            if (event.detail.status === 'not-presenting') {
+                feedbackMessage.textContent = "Tap on the AR icon to begin placing the HVAC system.";
+                feedbackMessage.style.color = "gray";
+            } else if (event.detail.status === 'presenting') {
+                feedbackMessage.textContent = "Tap on your wall to place the HVAC system. Adjust until all feedback indicators are green.";
+                feedbackMessage.style.color = "blue";
+            }
+        });
+        
+        // Define ideal placement parameters
+        const idealHeight = 2; // Ideal height in meters
+        const idealDistanceFromObjects = 1; // Ideal clearance in meters
+        
+        arViewer.addEventListener('ar-tracking', (event) => {
+            if (event.detail.status === 'tracking') {
+                // Mockup values: replace with actual height and clearance measurement methods
+                const modelHeight = arViewer.scale.y; 
+                const clearance = arViewer.getAttribute('interaction-prompt');
+        
+                if (modelHeight < idealHeight - 0.5) {
+                    feedbackMessage.textContent = "Warning: The HVAC system is placed too low. Consider placing it higher.";
+                    feedbackMessage.style.color = "red";
+                } else if (modelHeight > idealHeight + 0.5) {
+                    feedbackMessage.textContent = "Warning: The HVAC system is placed too high. Consider lowering it.";
+                    feedbackMessage.style.color = "red";
+                } else {
+                    feedbackMessage.textContent = "Great! The HVAC system is placed at an ideal height.";
+                    feedbackMessage.style.color = "green";
+                }
+        
+                if (clearance < idealDistanceFromObjects) {
+                    feedbackMessage.textContent += " Warning: The HVAC system is too close to other objects. Ensure a minimum clearance of 1 meter.";
+                    feedbackMessage.style.color = "red";
+                }
+            }
+        });
+        </script>
+        
+</body>
+</html>
