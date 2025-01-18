@@ -121,53 +121,75 @@
     </script>
 
 <script language="javascript">
-    // JavaScript code for detecting the platform and showing the blur wall
-    
-    // Function to detect if the platform is desktop
-    function isDesktop() {
-        const userAgent = navigator.userAgent.toLowerCase();
-        return (
-            !/mobile|android|iphone|ipad|tablet|ipod/.test(userAgent)
-        );
-    }
-    
-    // Function to create and display the blur wall
-    function createBlurWall() {
-        // Create the blur wall element
-        const blurWall = document.createElement('div');
-        blurWall.id = 'blur-wall';
-    
-        // Apply styles to the blur wall
-        blurWall.style.position = 'fixed';
-        blurWall.style.top = '0';
-        blurWall.style.left = '0';
-        blurWall.style.width = '100vw';
-        blurWall.style.height = '100vh';
-        blurWall.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
-        blurWall.style.backdropFilter = 'blur(20px)';
-        blurWall.style.zIndex = '1000';
-    
-        // Add an optional message
-        const message = document.createElement('div');
-        message.innerText = 'Desktop/laptop is not supported.';
-        message.style.position = 'absolute';
-        message.style.top = '50%';
-        message.style.left = '50%';
-        message.style.transform = 'translate(-50%, -50%)';
-        message.style.fontSize = '2.5rem';
-        message.style.color = '#333';
-        message.style.fontFamily = "Trebuchet MS";
-        blurWall.appendChild(message);
-    
-        // Append the blur wall to the body
-        document.body.appendChild(blurWall);
-    }
-    
-    // Check if the platform is desktop and display the blur wall
-    if (isDesktop()) {
-        createBlurWall();
-    }
-    
+// JavaScript code for detecting the platform and showing the blur wall
+
+// Function to detect if the platform is desktop
+function isDesktop() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    return (
+        !/mobile|android|iphone|ipad|tablet|ipod/.test(userAgent)
+    );
+}
+
+// Function to create and display the blur wall
+function createBlurWall() {
+    // Create the blur wall element
+    const blurWall = document.createElement('div');
+    blurWall.id = 'blur-wall';
+
+    // Apply styles to the blur wall
+    blurWall.style.position = 'fixed';
+    blurWall.style.top = '0';
+    blurWall.style.left = '0';
+    blurWall.style.width = '100vw';
+    blurWall.style.height = '100vh';
+    blurWall.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+    blurWall.style.backdropFilter = 'blur(30px)';
+    blurWall.style.zIndex = '1000';
+
+    // Add an optional message
+    const message = document.createElement('div');
+    message.innerText = 'Desktop/laptop is not supported.';
+    message.style.position = 'absolute';
+    message.style.top = '40%';
+    message.style.left = '50%';
+    message.style.transform = 'translate(-50%, -50%)';
+    message.style.fontSize = '2.5rem';
+    message.style.color = '#333';
+    message.style.fontFamily = 'Trebuchet MS';
+    blurWall.appendChild(message);
+
+    // Add a button to redirect to the landing page
+    const button = document.createElement('button');
+    button.innerText = 'Back to Landing Page';
+    button.style.position = 'absolute';
+    button.style.top = '60%';
+    button.style.left = '50%';
+    button.style.transform = 'translate(-50%, -50%)';
+    button.style.padding = '10px 20px';
+    button.style.fontSize = '1.5rem';
+    button.style.color = '#fff';
+    button.style.backgroundColor = '#007BFF';
+    button.style.border = 'none';
+    button.style.borderRadius = '20px';
+    button.style.cursor = 'pointer';
+    button.style.fontFamily = 'Trebuchet MS';
+    // Add click event to redirect to the landing page
+    button.addEventListener('click', () => {
+        window.location.href = '/'; // Adjust the path to your landing page
+    });
+
+    blurWall.appendChild(button);
+
+    // Append the blur wall to the body
+    document.body.appendChild(blurWall);
+}
+
+// Check if the platform is desktop and display the blur wall
+if (isDesktop()) {
+    createBlurWall();
+}
+
     </script>
 
 </body>
